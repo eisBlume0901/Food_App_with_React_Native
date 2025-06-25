@@ -2,18 +2,39 @@ import express from "express";
 import { ENV } from "./config/env.js";
 import { db } from "./config/db.js";
 import { userFavoritesTable } from "./db/schema.js";
+import { and, eq } from "drizzle-orm";
+
 
 const app = express();
 const PORT = ENV.PORT;
 
 app.use(express.json());
 
+app.get("/api/favorites/:userId", async (req, res) => {
+    try {
 
-app.get("/api/health/", (req, res) => {
-    res.status(200).json({
-        success: true
-    })
-});
+        const { userId } = req.params;
+
+        const userFavorites = await db
+        .select()
+        .from(userFavoritesTable)
+        .where( eq(userFavoritesTable.userId, userId) );
+
+        return res.status(200).json({
+            success: true,
+            favorites: userFavorites,
+            message: "Fetched your favorites successfully!"
+        })
+
+
+    } catch(error) {
+        console.log("Error fetching favorites:", error);
+        res.status(500).json({
+            success: false,
+            message: "Oops! Something went wrong while fetching your favorites",
+        })
+    }
+})
 
 app.post("/api/favorites", async (req, res) => {
 
@@ -45,8 +66,37 @@ app.post("/api/favorites", async (req, res) => {
         console.log("Error adding to favorites:", error);
         res.status(500).json({
             success: false,
-            message: "Internal server error while adding to favorites",
+            message: "Oops! Something went wrong while adding to favorites",
         })
+    }
+});
+
+app.delete("/api/favorites/:userId/:recipeId", async (req, res) => {
+    try {
+        const { userId, recipeId } = req.params;
+
+        const favorite = await db
+        .delete(userFavoritesTable)
+        .where
+        (
+            and
+            ( 
+                eq(userFavoritesTable.userId, userId), 
+                eq(userFavoritesTable.recipeId, parseInt(recipeId))
+            )
+        );
+
+        return res.status(200).json({
+            success: true,
+            message: "Deleted a favorite successfully!"
+        })
+
+    } catch(error) {
+        console.log("Error removing a favorite:", error);
+        res.status(500).json({
+            success: false,
+            message: "Oops! Something went wrong while removing a favorite",
+        });
     }
 });
 
