@@ -1,6 +1,7 @@
 import express from "express";
 import { ENV } from "./config/env.js";
 import { db } from "./config/db.js";
+import { userFavoritesTable } from "./db/schema.js";
 
 const app = express();
 const PORT = ENV.PORT;
@@ -14,16 +15,16 @@ app.get("/api/health/", (req, res) => {
     })
 });
 
-app.post("/api/favorites", (req, res) => {
+app.post("/api/favorites", async (req, res) => {
 
     try {
         const { userId, recipeId, title, image, cookTime, servings } = req.body;
 
-        if (!userId || !recipeId || title) {
-            return res.status(200).json({ error: "Missing required fields"});
+        if (!userId || !recipeId || !title) {
+            return res.status(400).json({ error: "Missing required fields"});
         }
 
-        const newFavorite = db
+        const newFavorite = await db
         .insert(userFavoritesTable)
         .values({
             userId,
@@ -35,7 +36,7 @@ app.post("/api/favorites", (req, res) => {
         })
         .returning();
 
-        res.status(201).json({
+        return res.status(201).json({
             success: true,
             message: "Added to your favorites successfully!",
         })
