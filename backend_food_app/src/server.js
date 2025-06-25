@@ -1,13 +1,52 @@
 import express from "express";
 import { ENV } from "./config/env.js";
+import { db } from "./config/db.js";
 
 const app = express();
 const PORT = ENV.PORT;
+
+app.use(express.json());
+
 
 app.get("/api/health/", (req, res) => {
     res.status(200).json({
         success: true
     })
+});
+
+app.post("/api/favorites", (req, res) => {
+
+    try {
+        const { userId, recipeId, title, image, cookTime, servings } = req.body;
+
+        if (!userId || !recipeId || title) {
+            return res.status(200).json({ error: "Missing required fields"});
+        }
+
+        const newFavorite = db
+        .insert(userFavoritesTable)
+        .values({
+            userId,
+            recipeId,
+            title,
+            image,
+            cookTime,
+            servings
+        })
+        .returning();
+
+        res.status(201).json({
+            success: true,
+            message: "Added to your favorites successfully!",
+        })
+    } 
+    catch (error) {
+        console.log("Error adding to favorites:", error);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error while adding to favorites",
+        })
+    }
 });
 
 app.listen(PORT, () => {
