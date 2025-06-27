@@ -4,11 +4,17 @@ import { db } from "./config/db.js";
 import { userFavoritesTable } from "./db/schema.js";
 import { and, eq } from "drizzle-orm";
 
-
 const app = express();
 const PORT = ENV.PORT;
 
 app.use(express.json());
+
+app.get("/api/fallback", (req, res) => {
+    return res.status(200).json({
+        success: true,
+        message: "This is a fallback route. The server is running smoothly!"
+    })
+});
 
 app.get("/api/favorites/:userId", async (req, res) => {
     try {
