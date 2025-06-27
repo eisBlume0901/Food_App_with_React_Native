@@ -1,17 +1,17 @@
 import cron from "cron";
 import https from "https";
 
-const job = new cron.CronJob("*/14 * * * *", function ()
+export const job = new cron.CronJob("*/14 * * * *", function ()
 {
     https
     .get(process.env.API_URL, (res) => {
-        if (res.statuCode === 200) 
+        if (res.statusCode === 200) 
         {
             console.log("GET Request sent successfully!");
         } 
         else 
         {
-            console.log("Error while sending request", e);
+            console.log("Error while sending request", res.statusCode);
         }
     })
     .on("error", (e) => console.error("Error while sending request", e));
