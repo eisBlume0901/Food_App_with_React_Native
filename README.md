@@ -15,6 +15,8 @@ Render - for cloud deployment
 
 Expo - for android emulator 
 
+
 Backend: ExpressJS
+
 Frontend: ReactNative
 

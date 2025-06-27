@@ -25,6 +25,6 @@ const job = new cron.CronJob("*/14 * * * *", function ()
 // * 14 * * * * = Every 14 minutes
 // * 0 0 * * 0 = At mighnight, every Sunday 
 // * 30 3 15 * * = At 3:30 AM, on the 15th of every month
-/
+
 // Format: Seconds Minutes Hours DayOfMonth Month DayOfWeek
 
