@@ -1,5 +1,6 @@
 import { Stack } from 'expo-router'
 import { Redirect } from 'expo-router';
+import { useAuth } from '@clerk/clerk-expo';
 
 const TabsLayout = () => {
     const { isSignedIn } = useAuth();
