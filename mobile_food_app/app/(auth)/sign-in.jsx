@@ -81,95 +81,95 @@ const SignInScreen = () => {
                 contentContainerStyle={authStyles.scrollContent}
                 showsVerticalScrollIndicator={false}
             >
-                <View style={authStyles.imagecontainer}>
-                    <Image 
-                        source={ require("../../assets/images/i1.png") }
-                        style={authStyles.image}
-                        contentFit="contain"
-                    />
-                </View>
-
-                <Text style={authStyles.title}>
-                    Welcome Back
-                </Text>
-
-
-                {/* FORM CONTAINER */}
-                <View styles={authStyles.formContainer}>
-
-                    {/* Email Input */}
-                    <View style={authStyles.inputContainer}>
-                        <TextInput 
-                            style={authStyles.textInput}
-                            placeholder="Enter email"
-                            placeholderTextColor={COLORS.textLight}
-                            value={email}
-                            onChangeText={setEmail}
-                            keyboardType="email-address"
-                            autoCapitalize="none"
+                    <View style={authStyles.imagecontainer}>
+                        <Image 
+                            source={ require("../../assets/images/i1.png") }
+                            style={authStyles.image}
+                            contentFit="contain"
                         />
-
                     </View>
 
-                    {/* Password Input */}
-                    <View style={authStyles.inputContainer}>
-                        <TextInput
-                            style={authStyles.textInput}
-                            placeholder="Enter password"
-                            placeholderTextColor={COLORS.textLight}
-                            value={password}
-                            onChangeText={setPassword}
-                            secureTextEntry={!showPassword}
-                            autoCapitalize="none"
-                        />
+                    <Text style={authStyles.title}>
+                        Welcome Back
+                    </Text>
 
-                        <TouchableOpacity 
-                            style={authStyles.eyeButton}
-                            onPress={ () => setShowPassword(!showPassword) }
+
+                    {/* FORM CONTAINER */}
+                    <View styles={authStyles.formContainer}>
+
+                        {/* Email Input */}
+                        <View style={authStyles.inputContainer}>
+                            <TextInput 
+                                style={authStyles.textInput}
+                                placeholder="Enter email"
+                                placeholderTextColor={COLORS.textLight}
+                                value={email}
+                                onChangeText={setEmail}
+                                keyboardType="email-address"
+                                autoCapitalize="none"
+                            />
+
+                        </View>
+
+                        {/* Password Input */}
+                        <View style={authStyles.inputContainer}>
+                            <TextInput
+                                style={authStyles.textInput}
+                                placeholder="Enter password"
+                                placeholderTextColor={COLORS.textLight}
+                                value={password}
+                                onChangeText={setPassword}
+                                secureTextEntry={!showPassword}
+                                autoCapitalize="none"
+                            />
+
+                            <TouchableOpacity 
+                                style={authStyles.eyeButton}
+                                onPress={ () => setShowPassword(!showPassword) }
+                            >
+                            <Ionicons 
+                                name={showPassword ? "eye-outline" : "eye-off-outline"}
+                                size={20}
+                                color={COLORS.textLight}
+                            />
+                            </TouchableOpacity>
+                        </View>
+
+                        {/* Sign In Button */}
+                        <TouchableOpacity
+                            style={ [authStyles.authButton, loading && authStyles.buttonDisabled] }
+                            onPress={handleSignIn}
+                            disabled={loading}
+                            activeOpacity={0.8}
                         >
-                        <Ionicons 
-                            name={showPassword ? "eye-outline" : "eye-off-outline"}
-                            size={20}
-                            color={COLORS.textLight}
-                        />
+
+                            <Text
+                                style={authStyles.buttonText}
+                            >
+                                {loading ? "Signing In..." : "Sign In"}
+                            </Text>
+                        </TouchableOpacity>
+
+
+                        {/* Sign Up Link */}
+                        <TouchableOpacity
+                            style={authStyles.linkContainer}
+                            onPress={ () => router.push("/(auth)/sign-up") }
+                        >
+                            <Text
+                                style={authStyles.linkText}
+                            >
+                                Don&apos;t have an account? <Text
+                                    style={authStyles.link}
+                                >
+                                    Sign Up
+                                </Text>
+
+                            </Text>
                         </TouchableOpacity>
                     </View>
-
-                    {/* Sign In Button */}
-                    <TouchableOpacity
-                        style={ [authStyles.authButton, loading && authStyles.buttonDisabled] }
-                        onPress={handleSignIn}
-                        disabled={loading}
-                        activeOpacity={0.8}
-                    >
-
-                        <Text
-                            style={authStyles.buttonText}
-                        >
-                            {loading ? "Signing In..." : "Sign In"}
-                        </Text>
-                    </TouchableOpacity>
-
-
-                    {/* Sign Up Link */}
-                    <TouchableOpacity
-                        style={authStyles.linkContainer}
-                        onPress={ () => router.push("/auth/sign-up") }
-                    >
-                        <Text
-                            style={authStyles.linkText}
-                        >
-                            Don&apos;t have an account? <Text
-                                style={authStyles.link}
-                            >
-                                Sign Up
-                            </Text>
-
-                        </Text>
-                    </TouchableOpacity>
-                </View>
             
-            </ScrollView>
+                </ScrollView>
             </KeyboardAvoidingView>
         </View>
     )
