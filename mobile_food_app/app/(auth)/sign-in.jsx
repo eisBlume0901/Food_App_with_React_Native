@@ -81,7 +81,7 @@ const SignInScreen = () => {
                 contentContainerStyle={authStyles.scrollContent}
                 showsVerticalScrollIndicator={false}
             >
-                    <View style={authStyles.imagecontainer}>
+                    <View style={authStyles.imageContainer}>
                         <Image 
                             source={ require("../../assets/images/i1.png") }
                             style={authStyles.image}
@@ -95,7 +95,7 @@ const SignInScreen = () => {
 
 
                     {/* FORM CONTAINER */}
-                    <View styles={authStyles.formContainer}>
+                    <View style={authStyles.formContainer}>
 
                         {/* Email Input */}
                         <View style={authStyles.inputContainer}>
