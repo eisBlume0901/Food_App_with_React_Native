@@ -61,7 +61,11 @@ const SignUpScreen = () => {
   };
 
   if(pendingVerification) {
-    return <Text>Pending UI will go here</Text>
+    return 
+    <VerifyEmail 
+      email={email} 
+      onBack={ () => setPendingVerification(false) }
+    />
   }
 
 
