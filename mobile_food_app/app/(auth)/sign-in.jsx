@@ -1,18 +1,31 @@
-import { View, Text, Alert, KeyboardAvoidingView, Platform, ScrollView, TextInput } from 'react-native'
+import 
+{ 
+    View, 
+    Text, 
+    Alert, 
+    KeyboardAvoidingView, 
+    Platform, 
+    ScrollView, 
+    TextInput, 
+    TouchableOpacity 
+} from 'react-native'
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useSignIn } from '@clerk/clerk-expo';
 import { authStyles } from "../../assets/styles/auth.styles"
 import { Image } from 'expo-image';
+import { COLORS } from "../../constants/colors";
+import { Ionicons } from "@expo/vector-icons";
+
 
 const SignInScreen = () => {
 
     const router = useRouter();
     const { signIn, setActive, isLoaded } = useSignIn();
-    const { email, setEMail } = useState("");
-    const { password, setPassword } = useState("");
-    const { showPassword, setShowPassword } = useState(false);
-    const { loading, setLoading } = useState(false); 
+    const [ email, setEmail ] = useState("");
+    const [ password, setPassword ] = useState("");
+    const [ showPassword, setShowPassword ] = useState(false);
+    const [ loading, setLoading ] = useState(false); 
 
     const handleSignIn = async () => {
         if (!email || !password) {
@@ -20,7 +33,7 @@ const SignInScreen = () => {
             return
         }
 
-        if (isLoaded) {
+        if (!isLoaded) {
             return;
         }
 
@@ -35,7 +48,7 @@ const SignInScreen = () => {
 
             if (signInAttempt.status === "complete") 
             {
-                await setActive({ session: signInAttempt.createSessionId })
+                await setActive({ session: signInAttempt.createdSessionId });
             } 
             else 
             {
@@ -60,7 +73,8 @@ const SignInScreen = () => {
         <View style={authStyles.container}>
             <KeyboardAvoidingView 
                 style={authStyles.keyboardView}
-                behavior={Platform.OS === 'ios' ? "padding": "height"}
+                behavior="padding"
+                keyboardVerticalOffset={64}
             >
             
             <ScrollView
@@ -83,23 +97,76 @@ const SignInScreen = () => {
                 {/* FORM CONTAINER */}
                 <View styles={authStyles.formContainer}>
 
-                {/* Email Input */}
-                <View style={authStyles.inputContainer}>
-                    <TextInput 
-                        style={authStyles.textInput}
-                        placeholder="Enter email"
-                        placeholderTextColor="COLORS.textLight"
-                        value={email}
-                        onChangeText={setEmail}
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                    />
+                    {/* Email Input */}
+                    <View style={authStyles.inputContainer}>
+                        <TextInput 
+                            style={authStyles.textInput}
+                            placeholder="Enter email"
+                            placeholderTextColor={COLORS.textLight}
+                            value={email}
+                            onChangeText={setEmail}
+                            keyboardType="email-address"
+                            autoCapitalize="none"
+                        />
 
-                </View>
+                    </View>
 
-                {/* Password Input */}
-                <View style={authStyles.inputContainer}>
-                    
+                    {/* Password Input */}
+                    <View style={authStyles.inputContainer}>
+                        <TextInput
+                            style={authStyles.textInput}
+                            placeholder="Enter password"
+                            placeholderTextColor={COLORS.textLight}
+                            value={password}
+                            onChangeText={setPassword}
+                            secureTextEntry={!showPassword}
+                            autoCapitalize="none"
+                        />
+
+                        <TouchableOpacity 
+                            style={authStyles.eyeButton}
+                            onPress={ () => setShowPassword(!showPassword) }
+                        >
+                        <Ionicons 
+                            name={showPassword ? "eye-outline" : "eye-off-outline"}
+                            size={20}
+                            color={COLORS.textLight}
+                        />
+                        </TouchableOpacity>
+                    </View>
+
+                    {/* Sign In Button */}
+                    <TouchableOpacity
+                        style={ [authStyles.authButton, loading && authStyles.buttonDisabled] }
+                        onPress={handleSignIn}
+                        disabled={loading}
+                        activeOpacity={0.8}
+                    >
+
+                        <Text
+                            style={authStyles.buttonText}
+                        >
+                            {loading ? "Signing In..." : "Sign In"}
+                        </Text>
+                    </TouchableOpacity>
+
+
+                    {/* Sign Up Link */}
+                    <TouchableOpacity
+                        style={authStyles.linkContainer}
+                        onPress={ () => router.push("/auth/sign-up") }
+                    >
+                        <Text
+                            style={authStyles.linkText}
+                        >
+                            Don&apos;t have an account? <Text
+                                style={authStyles.link}
+                            >
+                                Sign Up
+                            </Text>
+
+                        </Text>
+                    </TouchableOpacity>
                 </View>
             
             </ScrollView>
