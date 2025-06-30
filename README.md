@@ -42,3 +42,6 @@ Backend: ExpressJS
 Frontend: ReactNative
 
 
+Helpful Commands for expo:
+
+npx expo start -c --tunnel - 
