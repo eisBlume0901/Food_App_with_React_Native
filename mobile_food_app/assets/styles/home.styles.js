@@ -108,13 +108,14 @@ export const homeStyles = StyleSheet.create({
     fontWeight: "800",
     color: COLORS.text,
     letterSpacing: -0.5,
+    paddingLeft: 15,
   },
   recipesGrid: {
     gap: 16,
   },
   row: {
-    justifyContent: "space-between",
-    gap: 16,
+    justifyContent: "space-evenly",
+    gap: 5,
   },
   emptyState: {
     alignItems: "center",
