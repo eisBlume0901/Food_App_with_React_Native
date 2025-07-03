@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
- import { View, Text, ScrollView, TouchableOpacity, FlatList } from 'react-native'
+ import { View, Text, ScrollView, TouchableOpacity, FlatList, RefreshControl } from 'react-native'
 import { MealAPI } from '../../services/mealAPI';
 import { homeStyles } from "../../assets/styles/home.styles";
 import { Image } from 'expo-image';
@@ -106,6 +106,12 @@ const HomeScreen = () => {
     await loadCategoryData(category);
   };
 
+  // Refresh Control - when allowed, it updates the data (i tried scrolling it and didnt show a refresh animation)
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await loadData();
+    setRefreshing(false);
+  }
   // useEffect - In Vue.js, it is onMounted counterpart. It renders the 
   // component and then runs the function, ensuring that data is loaded
   useEffect( ()=> {
@@ -118,6 +124,13 @@ const HomeScreen = () => {
     <View style={homeStyles.container}>
       <ScrollView
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl 
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={COLORS.primary}
+          />
+        }
         contentContainerStyle={homeStyles.scrollContent}
       >
 
