@@ -1,11 +1,13 @@
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
+ import { View, Text, ScrollView, TouchableOpacity, FlatList } from 'react-native'
 import { MealAPI } from '../../services/mealAPI';
 import { homeStyles } from "../../assets/styles/home.styles";
 import { Image } from 'expo-image';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { COLORS } from '../../constants/colors';
+import CategoryFilter from '../../components/CategoryFilter';
+import RecipeCard from '../../components/RecipeCard';
 
 const HomeScreen = () => {
 
@@ -116,7 +118,7 @@ const HomeScreen = () => {
     <View style={homeStyles.container}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={homeStyles.scrollViewContent}
+        contentContainerStyle={homeStyles.scrollContent}
       >
 
         {/* ANIMAL ICONS */}
@@ -197,6 +199,8 @@ const HomeScreen = () => {
                         <Text style={homeStyles.metaText}>{featuredRecipe.area}</Text>
                       </View>
                     )}
+
+
                   </View>
 
                 </View>
@@ -208,6 +212,46 @@ const HomeScreen = () => {
         </View>
         }
 
+        {/* CATEGORIES SECTION */}
+        { categories.length > 0 && (
+          <CategoryFilter 
+            categories={categories}
+            selectedCategory={selectedCategory}
+            onSelectCategory={handleCategorySelect}
+          />
+        )}
+
+        
+        <View style={homeStyles.recipeSection}>
+          <View style={homeStyles.sectionHeader}>
+            <Text style={homeStyles.sectionTitle}>
+              {selectedCategory}
+            </Text>
+          </View>
+        </View>
+
+       {recipes.length > 0 ? (
+
+        <View>
+        <FlatList 
+            data={recipes}
+            renderItem={ ({ item }) => <RecipeCard recipe={item} /> }
+            keyExtractor={(item) => item.id.toString()}
+            numColumns={2}
+            columnWrapperStyle={homeStyles.row}
+            contentContainerStyle={homeStyles.recipesGrid}
+            scrollEnabled={false}
+        />
+        </View>
+       
+       ) : (
+        <View style={homeStyles.emptyState}>
+          <Ionicons name="restaurant-outline" size={64} color={COLORS.textLight} />
+          <Text style={homeStyles.emptyTitle}>No recipes found</Text>
+          <Text style={homeStyles.emptyDescription}>Try a different category</Text>
+        </View>
+       )
+      }
       </ScrollView>
     </View>
   )
