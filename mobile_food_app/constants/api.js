@@ -1,1 +1,1 @@
-export const API_URL = "https://food-app-with-react-native.onrender.com/api";
+export const API_URL = "https://food-app-with-react-native.onrender.com/api";  
