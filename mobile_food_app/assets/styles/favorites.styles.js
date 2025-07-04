@@ -1,5 +1,7 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { COLORS } from "../../constants/colors";
+
+const { width, height } = Dimensions.get("window");
 
 export const favoritesStyles = StyleSheet.create({
   container: {
@@ -82,8 +84,7 @@ export const favoritesStyles = StyleSheet.create({
   },
   emptyState: {
     alignItems: "center",
-    paddingVertical: 64,
-    paddingHorizontal: 32,
+    paddingVertical: height * 0.15, // 15% of screen height
   },
   emptyIconContainer: {
     width: 120,
