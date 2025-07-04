@@ -2,8 +2,8 @@ import
 { 
     View, 
     Text, 
-    ScrollView,
-    TextInput
+    TextInput,
+    FlatList
 } from 'react-native'
 import { MealAPI } from '../../services/mealAPI';
 import { searchStyles } from '../../assets/styles/search.styles';
@@ -11,6 +11,8 @@ import { useState, useEffect } from 'react';
 import { useDebounce } from "../../hooks/useDebounce"
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { COLORS } from '../../constants/colors';
+import RecipeCard from '../../components/RecipeCard';
+
 
 const SearchScreen = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -121,9 +123,49 @@ const SearchScreen = () => {
             returnKeyType="search"
           />
         </View>
+
       </View>
+
+      <View style={searchStyles.resultsSection}>
+        <View style={searchStyles.resultsHeader}>
+          <Text style={searchStyles.resultsTitle}>
+            {searchQuery ? `Results for "${searchQuery}"` : "Popular Reciples" }
+          </Text>
+          <Text style={searchStyles.resultsCount}>{recipes.length} found</Text>
+        </View>
+      </View>
+
+      {loading ? 
+      (
+        <View style={searchStyles.loadingContainer}>
+          <Text>Loading...</Text>
+        </View>
+      ) : (
+        <FlatList 
+          data={recipes}
+          renderItem={({item}) => <RecipeCard recipe={item} />}
+          keyExtractor={(item) => item.id.toString()}
+          numColumns={2}
+          columnWrapperStyle={searchStyles.row}
+          contentContainerStyle={searchStyles.recipesGrid}
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={<NoResultsFound />}
+        />
+      )}
     </View>
   )
 }
 
 export default SearchScreen;
+
+function NoResultsFound() {
+  return (
+    <View style={searchStyles.emptyState}>
+      <Ionicons name="search-outline" size={64} color={COLORS.textLight} />
+      <Text style={searchStyles.emptyTitle}>No recipes found</Text>
+      <Text style={searchStyles.emptyDescription}>
+        Try different keywords
+      </Text>
+    </View>
+  )
+}
