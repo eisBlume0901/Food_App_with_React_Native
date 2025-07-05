@@ -12,6 +12,7 @@ import { useDebounce } from "../../hooks/useDebounce"
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from '../../constants/colors';
 import RecipeCard from '../../components/RecipeCard';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 
 const SearchScreen = () => {
@@ -100,7 +101,7 @@ const SearchScreen = () => {
   // run the effect (it will not run if there is no changes)
 
   if (initialLoading) {
-    return <Text>Loading some data...</Text>
+    return <LoadingSpinner message="Loading some data..." />
   }
 
   return (
@@ -133,25 +134,27 @@ const SearchScreen = () => {
           </Text>
           <Text style={searchStyles.resultsCount}>{recipes.length} found</Text>
         </View>
-      </View>
 
-      {loading ? 
-      (
-        <View style={searchStyles.loadingContainer}>
-          <Text>Loading...</Text>
-        </View>
-      ) : (
-        <FlatList 
-          data={recipes}
-          renderItem={({item}) => <RecipeCard recipe={item} />}
-          keyExtractor={(item) => item.id.toString()}
-          numColumns={2}
-          columnWrapperStyle={searchStyles.row}
-          contentContainerStyle={searchStyles.recipesGrid}
-          showsVerticalScrollIndicator={false}
-          ListEmptyComponent={<NoResultsFound />}
-        />
-      )}
+
+        {loading ? 
+        (
+          <View style={searchStyles.loadingContainer}>
+            <LoadingSpinner message="Searching recipes..." size="small" />
+          </View>
+        ) : (
+          <FlatList 
+            data={recipes}
+            renderItem={({item}) => <RecipeCard recipe={item} />}
+            keyExtractor={(item) => item.id.toString()}
+            numColumns={2}
+            columnWrapperStyle={searchStyles.row}
+            contentContainerStyle={searchStyles.recipesGrid}
+            showsVerticalScrollIndicator={false}
+            ListEmptyComponent={<NoResultsFound />}
+          />
+        )}
+
+      </View>
     </View>
   )
 }
