@@ -1,4 +1,4 @@
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View, Text } from "react-native";
 import { COLORS } from "../constants/colors";
 
 export default function LoadingSpinner({message = "Loading...", size = "large"}) {
