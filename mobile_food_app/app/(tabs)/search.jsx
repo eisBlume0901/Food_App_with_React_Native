@@ -9,7 +9,7 @@ import { MealAPI } from '../../services/mealAPI';
 import { searchStyles } from '../../assets/styles/search.styles';
 import { useState, useEffect } from 'react';
 import { useDebounce } from "../../hooks/useDebounce"
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from '../../constants/colors';
 import RecipeCard from '../../components/RecipeCard';
 
