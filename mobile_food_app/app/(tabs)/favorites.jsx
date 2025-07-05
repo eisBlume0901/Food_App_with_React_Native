@@ -29,12 +29,6 @@ const FavoritesScreen = () => {
   const [ loading, setLoading ] = useState(true);
 
   useEffect(() => {
-    if (!user || !user.id) {
-      setFavoriteRecipes([]); // Optionally clear favorites on logout
-      setLoading(false);      // Stop loading spinner if no user
-      return;
-    }
-
     const loadFavorites = async() => {
       try
       {
@@ -45,10 +39,11 @@ const FavoritesScreen = () => {
         }
 
         const favorites = await response.json();
+        const safeFavorites = Array.isArray(favorites) ? favorites : []; // to handle udnefined, null, not array errors 
 
         // Has to transform the id since it needs to match the RecipeCard component
         // is compatible
-        const transformedFavorites = favorites.map(favorite => ({
+        const transformedFavorites = safeFavorites.map(favorite => ({
           ...favorite, // copies all properties from the favorite object into a new object 
           id: favorite.recipeId, // except id, will be overriden with the value of favorite.recipeId
         }));
